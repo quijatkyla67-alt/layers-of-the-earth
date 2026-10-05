@@ -1,12 +1,142 @@
-<!doctype html><html><head><meta charset='utf-8'><meta name='viewport' content='width=device-width,initial-scale=1'><title>Layers of the Earth</title><style>body{margin:0;font-family:Arial;background:linear-gradient(135deg,#fff5d8,#e7f2df);color:#24372b}.wrap{max-width:1000px;margin:auto;padding:25px}.card{background:white;border-radius:24px;padding:28px;box-shadow:0 8px 25px #0002}.hide{display:none}h1{font-size:55px;color:#c96f2b;text-align:center}h2{color:#39734c}.btn{padding:13px 20px;border:0;border-radius:12px;background:#39734c;color:white;font-weight:bold;cursor:pointer;margin:5px}.btn.orange{background:#d58932}.earth{width:360px;height:360px;border-radius:50%;margin:20px auto;position:relative;background:radial-gradient(circle,#f7c65d 0 18%,#e77a36 18% 38%,#ad572c 38% 51%,#5b8751 51% 59%,#4d9ec5 59%);box-shadow:inset -30px -25px 40px #0005}.hot{position:absolute;background:#39734c;color:#fff;border:2px solid #fff;padding:9px;border-radius:20px;cursor:pointer}.a{top:12%;right:8%}.b{top:40%;left:0}.c{bottom:22%;right:0}.d{bottom:5%;left:38%}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}.box{background:#f7f0df;padding:18px;border-radius:18px}.option{display:block;width:100%;text-align:left;padding:13px;margin:8px 0;border:2px solid #dce7d8;background:#fff;border-radius:10px;cursor:pointer}.ok{color:#39734c;font-weight:bold}.bad{color:#b94a3a;font-weight:bold}.score{text-align:center;font-size:30px;color:#39734c;font-weight:bold}</style></head><body><div class='wrap'>
-<section id='home' class='card'><h1>🌎 Layers of the Earth</h1><p style='text-align:center;font-size:20px'><b>Journey from the surface to the center!</b></p><div class='earth'></div><p style='text-align:center'>Explore, discover, and test your knowledge about Earth's four main layers.</p><div style='text-align:center'><button class='btn' onclick='show("learn")'>BEGIN JOURNEY</button></div></section>
-<section id='learn' class='card hide'><h2>🔍 Explore the Earth</h2><p>Tap a layer to reveal its information.</p><div class='earth'><button class='hot a' onclick='info("crust")'>Crust</button><button class='hot b' onclick='info("mantle")'>Mantle</button><button class='hot c' onclick='info("outer")'>Outer Core</button><button class='hot d' onclick='info("inner")'>Inner Core</button></div><div id='info' class='box'></div><button class='btn' onclick='show("challenge")'>Knowledge Challenge →</button></section>
-<section id='challenge' class='card hide'><h2>🧩 Identify the Layer</h2><div class='grid'><div class='box'><b>The layer where we live:</b><button class='option' onclick='check(this,true)'>Crust</button><button class='option' onclick='check(this,false)'>Mantle</button><p></p></div><div class='box'><b>The thickest layer:</b><button class='option' onclick='check(this,true)'>Mantle</button><button class='option' onclick='check(this,false)'>Inner Core</button><p></p></div><div class='box'><b>The liquid metal layer:</b><button class='option' onclick='check(this,true)'>Outer Core</button><button class='option' onclick='check(this,false)'>Crust</button><p></p></div><div class='box'><b>The deepest layer:</b><button class='option' onclick='check(this,true)'>Inner Core</button><button class='option' onclick='check(this,false)'>Outer Core</button><p></p></div></div><button class='btn orange' onclick='show("order")'>Next Activity →</button></section>
-<section id='order' class='card hide'><h2>📚 Build the Earth</h2><p>Click the layers in order, from outside to inside.</p><div id='seq'></div><div id='ordmsg'></div><button class='btn orange' onclick='resetOrder()'>Reset</button><button class='btn' onclick='startQuiz()'>Take the Quiz →</button></section>
-<section id='quiz' class='card hide'><h2>🎯 Quick Quiz</h2><p id='qn'></p><h3 id='qq'></h3><div id='opts'></div><p id='qf'></p></section>
-<section id='finish' class='card hide'><h2 style='text-align:center'>🎉 Mission Complete!</h2><p id='result' class='score'></p><p style='text-align:center'>Remember: <b>Crust → Mantle → Outer Core → Inner Core</b></p><p style='text-align:center'>Each layer has different materials, temperatures, and physical properties.</p><div style='text-align:center'><button class='btn' onclick='show("learn")'>Explore Again</button></div></section>
-</div><script>
-const D={crust:['🪨 Crust','The crust is the outermost and thinnest layer of Earth. It is made of solid rock and forms the continents and ocean floors. It is where humans, animals, and plants live.','Interesting fact: Earth has continental and oceanic crust.'],mantle:['🌋 Mantle','The mantle is the thickest layer of Earth. It lies beneath the crust and contains very hot rock that can slowly flow over long periods. Its movement helps drive tectonic plate movement.','Interesting fact: The mantle makes up most of Earth’s volume.'],outer:['🔥 Outer Core','The outer core is a very hot, liquid layer made mainly of iron and nickel. Its moving liquid metals help generate Earth’s magnetic field.','Interesting fact: The outer core is liquid.'],inner:['💛 Inner Core','The inner core is the deepest layer. It is made mainly of iron and nickel and stays solid because of extremely high pressure despite its very high temperature.','Interesting fact: It is Earth’s innermost layer.']};
-function show(id){document.querySelectorAll('section').forEach(x=>x.classList.add('hide'));document.getElementById(id).classList.remove('hide');scrollTo(0,0)}function info(k){let x=D[k];document.getElementById('info').innerHTML='<h3>'+x[0]+'</h3><p>'+x[1]+'</p><p><b>'+x[2]+'</b></p>'}info('crust');function check(b,c){let p=b.parentElement.querySelector('p');p.textContent=c?'✅ Correct!':'❌ Try again!';p.className=c?'ok':'bad'}let arr=[],correct=['Crust','Mantle','Outer Core','Inner Core'];function order(x){if(arr.includes(x))return;arr.push(x);document.getElementById('seq').textContent=arr.join(' → ');if(arr.length===4)document.getElementById('ordmsg').innerHTML='<p class="'+(arr.join('|')===correct.join('|')?'ok':'bad')+'">'+(arr.join('|')===correct.join('|')?'✅ Perfect!':'❌ Not quite. Reset and try again.')+'</p>'}function resetOrder(){arr=[];document.getElementById('seq').innerHTML=correct.map(x=>'<button class="option" style="display:inline-block;width:auto" onclick="order(\''+x+'\')">'+x+'</button>').join('');document.getElementById('ordmsg').innerHTML=''}resetOrder();
-const Q=[['Which layer is the outermost?',0,['Crust','Mantle','Outer Core','Inner Core']],['Which layer is the thickest?',1,['Crust','Mantle','Outer Core','Inner Core']],['Which layer is liquid?',2,['Crust','Mantle','Outer Core','Inner Core']],['Why is the inner core solid?',1,['Because it is cold','Because of extremely high pressure','Because it contains water','Because it is empty']],['What is the correct order?',0,['Crust → Mantle → Outer Core → Inner Core','Mantle → Crust → Outer Core → Inner Core','Inner Core → Outer Core → Mantle → Crust','Crust → Outer Core → Mantle → Inner Core']]];let qi=0,sc=0;function startQuiz(){qi=0;sc=0;show('quiz');render()}function render(){let q=Q[qi];document.getElementById('qn').textContent='Question '+(qi+1)+' of '+Q.length;document.getElementById('qq').textContent=q[0];document.getElementById('qf').textContent='';document.getElementById('opts').innerHTML=q[2].map((a,i)=>'<button class="option" onclick="ans('+i+')">'+a+'</button>').join('')}function ans(i){let q=Q[qi];document.querySelectorAll('#opts button').forEach(b=>b.disabled=true);let f=document.getElementById('qf');if(i===q[1]){sc++;f.textContent='✅ Correct!';f.className='ok'}else{f.textContent='❌ Correct answer: '+q[2][q[1]];f.className='bad'}setTimeout(()=>{qi++;qi<Q.length?render():(document.getElementById('result').textContent='Your Score: '+sc+' / '+Q.length,show('finish'))},700)}
-</script></body></html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Astronomy Explorer | Interactive Student IMs</title>
+<style>
+:root{--bg:#07111f;--card:#101f35;--card2:#132943;--text:#eef6ff;--muted:#a9bdd3;--accent:#6ed8ff;--accent2:#b78cff;--good:#65e6a1;--bad:#ff7d91}
+*{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,sans-serif;background:radial-gradient(circle at 80% 10%,#26366b 0,#07111f 38%,#030811 100%);color:var(--text);line-height:1.55}
+header{padding:56px 7% 38px;text-align:center;background:linear-gradient(180deg,rgba(22,36,75,.8),transparent)}
+h1{font-size:clamp(2.2rem,6vw,4.5rem);margin:.1em 0;background:linear-gradient(90deg,var(--accent),#fff,var(--accent2));color:transparent;background-clip:text}
+.subtitle{max-width:760px;margin:auto;color:var(--muted);font-size:1.08rem}
+nav{position:sticky;top:0;z-index:5;background:rgba(3,8,17,.9);backdrop-filter:blur(10px);padding:12px 5%;display:flex;gap:8px;overflow:auto;border-bottom:1px solid #263852}
+nav a{color:var(--text);text-decoration:none;padding:9px 13px;border-radius:999px;white-space:nowrap}nav a:hover{background:#1a3150}
+main{max-width:1100px;margin:auto;padding:30px 5% 70px}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.card{background:linear-gradient(145deg,rgba(19,41,67,.95),rgba(10,25,43,.95));border:1px solid #29425f;border-radius:20px;padding:22px;box-shadow:0 12px 35px rgba(0,0,0,.22)}
+.card h3{margin-top:0}.tag{display:inline-block;font-size:.8rem;color:#07111f;background:var(--accent);padding:3px 9px;border-radius:20px;font-weight:700}
+button,.download{border:0;border-radius:12px;padding:11px 15px;background:linear-gradient(90deg,#39b9e8,#8f70ef);color:white;font-weight:700;cursor:pointer;text-decoration:none;display:inline-block;margin:5px 4px 5px 0}
+button.secondary,.download.secondary{background:#203a58}.hidden{display:none}.module{margin:22px 0}.module h2{font-size:1.8rem}
+.quiz-q{padding:16px;margin:12px 0;background:#0b1a2c;border-radius:14px;border:1px solid #233b56}
+.option{display:block;margin:8px 0;padding:9px 12px;background:#162b44;border-radius:10px;cursor:pointer}.option:hover{background:#203d60}
+.result{font-weight:700;margin-top:12px}.good{color:var(--good)}.bad{color:var(--bad)}
+canvas{width:100%;height:240px;background:#020712;border-radius:16px;border:1px solid #29425f}
+table{width:100%;border-collapse:collapse}td,th{padding:10px;border-bottom:1px solid #29425f;text-align:left}
+footer{text-align:center;padding:30px;color:var(--muted);border-top:1px solid #1d3149}
+@media(max-width:600px){header{padding:38px 5% 25px}.card{padding:17px}}
+</style>
+</head>
+<body>
+<header>
+<div style="font-size:3rem">🌌</div>
+<h1>Astronomy Explorer</h1>
+<p class="subtitle">Interactive Instructional Materials (IMs) for students — explore the Solar System, stars, galaxies, gravity, and the universe through mini-lessons, simulations, and quizzes.</p>
+</header>
+<nav>
+<a href="#home">Home</a><a href="#solar">Solar System</a><a href="#stars">Stars</a><a href="#gravity">Gravity Lab</a><a href="#quiz">Quiz</a><a href="#downloads">Downloads</a>
+</nav>
+<main>
+<section id="home" class="module">
+<h2>🚀 Learning Mission</h2>
+<div class="grid">
+<div class="card"><span class="tag">IM 1</span><h3>Solar System</h3><p>Compare planets and discover why Earth is special.</p><a class="download" href="#solar">Start module</a></div>
+<div class="card"><span class="tag">IM 2</span><h3>Life of a Star</h3><p>Follow a star from a nebula to its final stage.</p><a class="download" href="#stars">Explore</a></div>
+<div class="card"><span class="tag">IM 3</span><h3>Gravity Lab</h3><p>Change mass and distance to see how gravity responds.</p><a class="download" href="#gravity">Run lab</a></div>
+<div class="card"><span class="tag">Assessment</span><h3>Knowledge Check</h3><p>Test your astronomy knowledge and get instant feedback.</p><a class="download" href="#quiz">Take quiz</a></div>
+</div>
+</section>
+
+<section id="solar" class="module">
+<h2>☀️ IM 1 — Solar System Explorer</h2>
+<div class="card">
+<p><b>Goal:</b> Identify the eight planets and recognize patterns in their size, composition, and distance from the Sun.</p>
+<table><tr><th>Planet</th><th>Type</th><th>Fun fact</th></tr>
+<tr><td>Mercury</td><td>Rocky</td><td>Smallest planet</td></tr>
+<tr><td>Venus</td><td>Rocky</td><td>Hottest planet</td></tr>
+<tr><td>Earth</td><td>Rocky</td><td>Known life-supporting world</td></tr>
+<tr><td>Mars</td><td>Rocky</td><td>Often called the Red Planet</td></tr>
+<tr><td>Jupiter</td><td>Gas giant</td><td>Largest planet</td></tr>
+<tr><td>Saturn</td><td>Gas giant</td><td>Famous for its rings</td></tr>
+<tr><td>Uranus</td><td>Ice giant</td><td>Rotates with a very large tilt</td></tr>
+<tr><td>Neptune</td><td>Ice giant</td><td>Farthest major planet from the Sun</td></tr></table>
+<p><b>Think:</b> What patterns do you notice between the inner and outer planets?</p>
+</div></section>
+
+<section id="stars" class="module">
+<h2>⭐ IM 2 — Life of a Star</h2>
+<div class="card">
+<p>Stars form in clouds of gas and dust called <b>nebulae</b>. Their life paths depend strongly on their mass.</p>
+<div class="grid">
+<div class="card"><h3>1. Nebula</h3><p>Gravity pulls gas and dust together.</p></div>
+<div class="card"><h3>2. Main Sequence</h3><p>A stable stage where hydrogen fusion powers the star.</p></div>
+<div class="card"><h3>3. Giant Stage</h3><p>The star expands as its fuel supply changes.</p></div>
+<div class="card"><h3>4. Final Stage</h3><p>Lower-mass stars end as white dwarfs; very massive stars can explode as supernovae and leave neutron stars or black holes.</p></div>
+</div>
+<button onclick="document.getElementById('starChallenge').classList.toggle('hidden')">Reveal Challenge</button>
+<div id="starChallenge" class="hidden"><p><b>Challenge:</b> Why does a massive star usually have a shorter life than a lower-mass star?</p><p>Hint: Think about how quickly it uses its nuclear fuel.</p></div>
+</div></section>
+
+<section id="gravity" class="module">
+<h2>🪐 IM 3 — Interactive Gravity Lab</h2>
+<div class="card">
+<p>Gravity gets stronger when masses increase and weaker as distance increases. Use the controls to explore the relationship.</p>
+<label>Mass A: <input id="massA" type="range" min="1" max="100" value="50" oninput="drawGravity()"></label>
+<span id="massAVal">50</span><br>
+<label>Mass B: <input id="massB" type="range" min="1" max="100" value="50" oninput="drawGravity()"></label>
+<span id="massBVal">50</span><br>
+<label>Distance: <input id="dist" type="range" min="10" max="100" value="50" oninput="drawGravity()"></label>
+<span id="distVal">50</span>
+<p><b>Relative gravitational force:</b> <span id="force">1.00</span></p>
+<canvas id="gravityCanvas" width="900" height="240"></canvas>
+<p><b>Prediction:</b> Double the distance. What happens to the force? Try it and observe.</p>
+</div></section>
+
+<section id="quiz" class="module">
+<h2>🧠 Astronomy Knowledge Check</h2>
+<div class="card">
+<div class="quiz-q"><b>1. Which object is at the center of our Solar System?</b>
+<label class="option"><input type="radio" name="q1" value="a"> Earth</label><label class="option"><input type="radio" name="q1" value="b"> The Sun</label><label class="option"><input type="radio" name="q1" value="c"> Jupiter</label></div>
+<div class="quiz-q"><b>2. What force keeps planets in orbit?</b>
+<label class="option"><input type="radio" name="q2" value="a"> Gravity</label><label class="option"><input type="radio" name="q2" value="b"> Magnetism</label><label class="option"><input type="radio" name="q2" value="c"> Friction</label></div>
+<div class="quiz-q"><b>3. What is a galaxy?</b>
+<label class="option"><input type="radio" name="q3" value="a"> A single star</label><label class="option"><input type="radio" name="q3" value="b"> A collection of stars, gas, dust, and dark matter bound by gravity</label><label class="option"><input type="radio" name="q3" value="c"> A planet with rings</label></div>
+<div class="quiz-q"><b>4. Which planet is the largest in our Solar System?</b>
+<label class="option"><input type="radio" name="q4" value="a"> Saturn</label><label class="option"><input type="radio" name="q4" value="b"> Earth</label><label class="option"><input type="radio" name="q4" value="c"> Jupiter</label></div>
+<div class="quiz-q"><b>5. Where does nuclear fusion occur in a normal main-sequence star?</b>
+<label class="option"><input type="radio" name="q5" value="a"> Core</label><label class="option"><input type="radio" name="q5" value="b"> Rings</label><label class="option"><input type="radio" name="q5" value="c"> Atmosphere only</label></div>
+<button onclick="checkQuiz()">Check answers</button><div id="quizResult" class="result"></div>
+</div></section>
+
+<section id="downloads" class="module">
+<h2>📥 Student Downloads</h2>
+<div class="grid">
+<div class="card"><h3>📄 Student Activity Sheet</h3><p>Printable prompts for the three interactive modules.</p><a class="download" href="downloads/astronomy_activity_sheet.html" download>Download Activity Sheet</a></div>
+<div class="card"><h3>📝 Answer Key</h3><p>Teacher reference with suggested answers.</p><a class="download" href="downloads/astronomy_answer_key.html" download>Download Answer Key</a></div>
+<div class="card"><h3>📋 Lesson Guide</h3><p>Suggested 45–60 minute classroom flow.</p><a class="download" href="downloads/astronomy_lesson_guide.html" download>Download Lesson Guide</a></div>
+</div>
+<p style="color:var(--muted)">Tip: The downloaded HTML files open in any modern browser and can be printed to PDF.</p>
+</section>
+</main>
+<footer>🌌 Astronomy Explorer • Interactive student materials • Designed for classroom and independent learning</footer>
+<script>
+function drawGravity(){
+ const a=+document.getElementById('massA').value,b=+document.getElementById('massB').value,d=+document.getElementById('dist').value;
+ document.getElementById('massAVal').textContent=a;document.getElementById('massBVal').textContent=b;document.getElementById('distVal').textContent=d;
+ const f=(a*b)/(d*d);document.getElementById('force').textContent=f.toFixed(2);
+ const c=document.getElementById('gravityCanvas'),x=c.getContext('2d');x.clearRect(0,0,c.width,c.height);
+ const r1=12+a*.45,r2=12+b*.45,sep=150+d*4;
+ x.beginPath();x.arc(200,120,r1,0,Math.PI*2);x.fillStyle='#6ed8ff';x.fill();
+ x.beginPath();x.arc(Math.min(700,200+sep),120,r2,0,Math.PI*2);x.fillStyle='#b78cff';x.fill();
+ x.strokeStyle='#55718f';x.setLineDash([8,8]);x.beginPath();x.moveTo(200+r1,120);x.lineTo(Math.min(700,200+sep)-r2,120);x.stroke();x.setLineDash([]);
+ x.fillStyle='#eef6ff';x.font='18px system-ui';x.fillText('Mass A',150,210);x.fillText('Mass B',Math.min(650,150+sep),210);
+}
+function checkQuiz(){
+ const ans={q1:'b',q2:'a',q3:'b',q4:'c',q5:'a'};let score=0;
+ for(const q in ans){const el=document.querySelector('input[name="'+q+'"]:checked');if(el&&el.value===ans[q])score++}
+ const r=document.getElementById('quizResult');r.textContent=`You scored ${score}/5.`;r.className='result '+(score>=4?'good':'bad');
+ if(score===5)r.textContent+=' Excellent work, astronomer!';else if(score>=3)r.textContent+=' Review the modules and try again.';
+}
+drawGravity();
+</script>
+</body>
+</html>
